@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 
-class TestModel(models.Model):
+class Property(models.Model):
     _name = "estate.property"
     _description = "Test Description"
 
@@ -35,4 +35,9 @@ class TestModel(models.Model):
         required=True,
         copy=False,
         default="new",
+    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
+    seller_id = fields.Many2one(
+        "res.users", string="Seller", default=lambda self: self.env.user
     )

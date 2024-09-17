@@ -1,10 +1,6 @@
 <odoo>
 
-    <record id="test_model_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+
 
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
@@ -12,6 +8,7 @@
         <field name="arch" type="xml">
             <tree string="Properties">
                 <field string="Title" name="name"/>
+                <field string="Property Type" name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area"/>
@@ -35,6 +32,7 @@
                     </div>
                     <group col="2">
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -56,6 +54,12 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -73,6 +77,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <separator/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
