@@ -1,7 +1,4 @@
 <odoo>
-
-
-
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -25,6 +22,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_property_sold" type="object" string="SOLD"/>
+                    <button name="action_property_canceled" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1 class="mb32">
@@ -34,67 +35,7 @@
                     </div>
                     <group col="2">
                         <group>
-                            <field name="property_type_id"/>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
-                        </group>
-                        <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field string="Living Area (sqm)" name="living_area"/>
-                                <field string="Total Area (sqm)" name="total_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                            </group>
-                        </page>
-                        <page string="Other Info">
-                            <group>
-                                <field name="seller_id"/>
-                                <field name="buyer_id"/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_property_offer_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer.tree</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <tree string="Properties">
-                <field name="price"/>
-                <field name="status"/>
-                <field name="partner_id"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <form string="Property Form">
-                <sheet>
-                    <div class="oe_title">
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
-                            <field string="Tags" name="tags_ids" widget="many2many_tags"/>
-                        </h1>
-                    </div>
-                    <group col="2">
-                        <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -136,6 +77,20 @@
         </field>
     </record>
 
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="price"/>
+                <field name="status"/>
+                <field name="partner_id"/>
+                <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check"/>
+                <button name="action_refuse_offer" type="object" string="REFUSE"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -152,12 +107,8 @@
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
-                <filter string="Available" name="date_availability" domain="['|',
-                                                                                ('state', '=', 'new'),
-                                                                                ('state', '=', 'offer received')]"/>
-
+                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
             </search>
         </field>
     </record>
-
 </odoo>

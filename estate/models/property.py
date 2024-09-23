@@ -1,4 +1,6 @@
 from odoo import api, models, fields
+import odoo
+import odoo.exceptions
 
 
 class Property(models.Model):
@@ -39,7 +41,9 @@ class Property(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
+    buyer_id = fields.Many2one(
+        "res.partner", string="Buyer", copy=False
+    )  # Update to res.partner
     seller_id = fields.Many2one(
         "res.users", string="Seller", default=lambda self: self.env.user
     )
@@ -64,3 +68,19 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise odoo.exceptions.UserError("Canceled properties cannot be sold!")
+            else:
+                record.state = "sold"
+        return True
+
+    def action_property_canceled(self):
+        for record in self:
+            if record.state == "sold":
+                raise odoo.exceptions.UserError("Sold properties cannot be canceled!")
+            else:
+                record.state = "canceled"
+        return True

@@ -1,5 +1,6 @@
 from datetime import timedelta
 from odoo import api, models, fields
+import odoo
 
 
 class Offer(models.Model):
@@ -24,3 +25,22 @@ class Offer(models.Model):
                 record.date_deadline = fields.Date.today() + timedelta(
                     days=record.validity
                 )
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+                raise odoo.exceptions.UserError(
+                    "An offer has already been accepted for this property."
+                )
+            record.status = "accepted"
+            record.property_id.state = "offer accepted"
+            record.property_id.buyer_id = (
+                record.partner_id.id
+            )  # Ensure correct assignment
+            record.property_id.selling_price = record.price
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+        return True
