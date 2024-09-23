@@ -1,12 +1,9 @@
 <odoo>
-    <menuitem id="test_menu_root" name="Real Estate">
-        <menuitem id="advertisements_menu" name="Advertisements">
-            <menuitem id="property_model_menu_action" action="property_model_action"/>
-        </menuitem>
-        <menuitem id="settings_menu" name="Settings">
-            <menuitem id="property_type_model_menu_action" action="property_type_model_action"/>
-        </menuitem>
-    </menuitem>
+    <record id="property_model_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
     <record id="property_type_model_action" model="ir.actions.act_window">
         <field name="name"> Property Types</field>
@@ -14,9 +11,19 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record id="property_model_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
+    <record id="property_tag_model_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <menuitem id="test_menu_root" name="Real Estate">
+        <menuitem id="advertisements_menu" name="Advertisements">
+            <menuitem id="property_model_menu_action" action="property_model_action"/>
+        </menuitem>
+        <menuitem id="settings_menu" name="Settings">
+            <menuitem id="property_type_model_menu_action" action="property_type_model_action"/>
+            <menuitem id="property_tag_model_menu_action" action="property_tag_model_action"/>
+        </menuitem>
+    </menuitem>
 </odoo>
