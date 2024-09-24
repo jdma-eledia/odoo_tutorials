@@ -1,6 +1,8 @@
 from datetime import timedelta
 from odoo import api, models, fields
 import odoo
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class Offer(models.Model):
@@ -13,6 +15,9 @@ class Offer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline")
+    _sql_constraints = [
+        ("check_price", "CHECK (price > 0)", "The offer price must be greater than 0")
+    ]
 
     @api.depends("create_date", "validity")
     def _compute_deadline(self):

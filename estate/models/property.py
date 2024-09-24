@@ -1,6 +1,7 @@
 from odoo import api, models, fields
 import odoo
 import odoo.exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -11,7 +12,8 @@ class Property(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Datetime.add(fields.Datetime.now(), months=3)
+        copy=False,
+        default=lambda self: fields.Datetime.add(fields.Datetime.now(), months=3),
     )
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     expected_price = fields.Float(required=True)
@@ -50,6 +52,19 @@ class Property(models.Model):
     tags_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK (expected_price > 0)",
+            "Expected price must be > 0",
+        ),
+        (
+            "check_selling_price",
+            "CHECK (selling_price >= 0)",
+            "Selling price must be >= 0",
+        ),
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -68,6 +83,19 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            # Skip check if selling_price is zero
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            # Calculate 90% of expected_price
+            min_price = 0.9 * record.expected_price
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise odoo.exceptions.ValidationError(
+                    f"Selling price cannot be lower than 90% of the expected price ({min_price})."
+                )
 
     def action_property_sold(self):
         for record in self:

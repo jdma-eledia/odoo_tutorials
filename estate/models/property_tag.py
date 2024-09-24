@@ -6,3 +6,5 @@ class Property(models.Model):
     _description = "These are Tags like cozy"
 
     name = fields.Char(required=True)
+
+    _sql_constraints = [("check_unique_tag", "UNIQUE(name)", "Tag name must be unique")]
