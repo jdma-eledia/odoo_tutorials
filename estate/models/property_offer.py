@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class Offer(models.Model):
     _name = "estate.property.offer"
     _description = "this is the offer model"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")])
