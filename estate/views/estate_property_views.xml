@@ -25,6 +25,7 @@
                 <header>
                     <button name="action_property_sold" type="object" string="SOLD"/>
                     <button name="action_property_canceled" type="object" string="CANCEL"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -35,7 +36,6 @@
                     </div>
                     <group col="2">
                         <group>
-                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
