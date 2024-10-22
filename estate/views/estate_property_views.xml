@@ -86,7 +86,6 @@
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
-                <field name="property_id" invisible="1"/>
                 <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check" invisible="status"/>
                 <button name="action_refuse_offer" type="object" string="REFUSE" icon="fa-close" invisible="status"/>
             </tree>
