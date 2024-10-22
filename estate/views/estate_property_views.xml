@@ -82,7 +82,7 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties" editable="bottom">
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
