@@ -62,13 +62,8 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" readonly="state in ('sold', 'canceled')">
-                                    <tree string="Offers">
-                                        <field name="partner_id"/>
-                                        <field name="price"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
+                                <field name="offer_ids" readonly="state in ('offer accepted', 'sold', 'canceled')"/>
+                                <field name="state" invisible="1"/>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -91,8 +86,9 @@
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
-                <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check" invisible="status != 'new'"/>
-                <button name="action_refuse_offer" type="object" string="REFUSE" invisible="status != 'new'"/>
+                <field name="property_id" invisible="1"/>
+                <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check" invisible="status"/>
+                <button name="action_refuse_offer" type="object" string="REFUSE" icon="fa-close" invisible="status"/>
             </tree>
         </field>
     </record>
