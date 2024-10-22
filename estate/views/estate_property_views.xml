@@ -56,13 +56,19 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="state in ('sold', 'canceled')">
+                                    <tree string="Offers">
+                                        <field name="partner_id"/>
+                                        <field name="price"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -85,8 +91,8 @@
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
-                <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check"/>
-                <button name="action_refuse_offer" type="object" string="REFUSE"/>
+                <button name="action_accept_offer" type="object" string="ACCEPT" icon="fa-check" invisible="status != 'new'"/>
+                <button name="action_refuse_offer" type="object" string="REFUSE" invisible="status != 'new'"/>
             </tree>
         </field>
     </record>
